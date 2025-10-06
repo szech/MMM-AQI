@@ -1,40 +1,137 @@
-.city,
-.aqi,
-.iaqi {
+
+/***    MMM-AQI  */
+
+th {
+    font-size: var(--font-size-medium);
+}
+
+th.city {
+  padding-right: 1em;
+}
+
+td.key {
+    max-width: 7.5em;
+}
+
+td.value,
+.iaqi.key {
+    padding-left: 1em;
+}
+
+
+th.city,
+th.aqi,
+.iaqi.key,
+.atm.key {
   text-align: right;
 }
+
+th.aqi,
+.atm.value,
+.iaqi.value {
+  text-align: left;
+}
+
 .city:before {
   font-family: "weathericons";
-  content: "\f041";
-  padding-right: 5px;
+  content: "\f077";
+  padding-right: 15px;
 }
 
 .city.moderate:before {
+  content: "\f041";
+}
+
+.city.unhealthy-sensitive:before {
+  content: "\f014";
+}
+
+.city.unhealthy:before{
   content: "\f062";
 }
-.city.unhealthy-sensitive:before,
-.city.unhealthy:before,
+
 .city.very-unhealthy:before {
   content: "\f074";
 }
 .city.hazardous:before {
   content: "\f071";
 }
-.aqi.good {
+
+
+/*  aqi colours  */
+.city.good,
+.aqi.good,
+.iaqi.good {
   color: #009966;
 }
-.aqi.moderate {
+
+.city.moderate,
+.aqi.moderate,
+.iaqi.moderate {
   color: #ffde33;
 }
-.aqi.unhealthy-sensitive {
+
+.city.unhealthy-sensitive,
+.aqi.unhealthy-sensitive,
+.iaqi.unhealthy-sensitive {
   color: #ff9933;
 }
-.aqi.unhealthy {
+
+.city.unhealthy,
+.aqi.unhealthy,
+.iaqi.unhealthy {
   color: #cc0033;
 }
-.aqi.very-unhealthy {
+
+.city.unhealthy,
+.aqi.very-unhealthy,
+.iaqi.very-unhealthy,
+.purple {
   color: #660099;
 }
-.aqi.hazardous {
+
+.city.hazardous,
+.aqi.hazardous,
+.iaqi.hazardous {
   color: #7e0023;
+}
+
+
+/*  temperature colours  */
+/*  based on the met office colours: https://www.metoffice.gov.uk/blog/2023/no-need-to-see-red-over-met-office-colour-scale */
+.darkblue {
+  color: #4b5693;
+}
+
+.blue {
+  color: #61abc1;
+}
+
+
+.lightgreen {
+  color: #bfe2bb;
+}
+
+.lightyellow {
+  color: #f6db8d;
+}
+
+.yellow {
+  color: #f4cc7a;
+}
+
+.orange {
+  color: #e38048;
+}
+
+.darkorange {
+  color: #cd4e3b;
+}
+
+.red {
+  color: #b12a35;
+}
+
+.darkred {
+  color: #34060f;
 }

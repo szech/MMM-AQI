@@ -170,10 +170,15 @@ Module.register("MMM-AQI", {
                       valueCell.innerHTML = value + this.displayUnits.get(atmKey)
                    
                       // set classes
-                      const temperatureClass = atmKey == "t" ? this.getTemperatureClass(value) : ""
-                      const uviClass = atmKey == "uvi" ? this.getUVIClass(value) : ""
-                      valueCell.className = `small atm value ${atmKey} ${temperatureClass} ${uviClass}`
+                      valueCell.className = `small atm value`
+                      valueCell.className += atmKey == "t" ? this.getTemperatureClass(value) : ""
+                      valueCell.className += atmKey == "uvi" ? this.getUVIClass(value) : ""
+                      valueCell.className += atmKey == "h" ? this.getHumidityClass(value) : ""
+                      valueCell.className += atmKey == "w" ? this.getWindSpeedClass(value) : ""
+                      valueCell.className += atmKey == "p" ? this.getPressureClass(value) : ""
+                      
                       dataRow.appendChild(valueCell)
+
                   } else {
                       // Placeholders to maintain 4-column structure if data is missing
                       dataRow.appendChild(document.createElement("td"))
@@ -292,7 +297,7 @@ Module.register("MMM-AQI", {
     },
 
 
-  // Assign aqi class name.
+  // Assign temperature class name.
   getTemperatureClass(t) {
       switch (true) {
         case t <= -10:
@@ -315,6 +320,62 @@ Module.register("MMM-AQI", {
           return  "darkred bright"
         case t >= 40:
           return  "purple bright"
+      }
+    },
+
+    // Assign wind speed class name.
+    getWindSpeedClass(w) {
+        switch (true) {
+          case w <= 1:
+            return  ""
+          case w > 1 && w <= 5:
+            return  "good"
+          case w > 5 && w < 11:
+            return  "moderate"
+          case w >= 11 && w < 17:
+            return  "unhealthy-sensitive"
+          case w >= 17 && w < 24:
+            return  "unhealthy bright"
+          case w >= 25:
+            return  "hazardous bright"
+        }
+      },
+
+
+
+    // Assign humidity class name.
+    getHumidityClass(h) {
+      switch (true) {
+        case h <= 30:
+          return  "unhealthy-sensitive"
+        case h >= 31 && h < 41:
+          return  "moderate"  
+        case h >= 41 && h < 66:
+          return  "good"
+        case h >= 66 && h < 80:
+          return  "moderate"
+        case h >= 80 && h < 91:
+          return  "unhealthy-sensitive"
+        case h >= 91:
+          return  "underwater"
+      }
+    },
+
+
+    // Assign pressure class name.
+    // Standard atmospheric pressure is 1013 hPa
+    getPressureClass(p) {
+      switch (true) {
+        case p < 980:
+          return  "darkblue"
+        case p >= 980 && p < 1000:
+          return  "blue"  
+        case p >= 1000 && p < 1020:
+          return  ""
+        case p >= 1020 && p < 1035:
+          return  "lightyellow"
+        case p >= 1035:
+          return  "yellow"
       }
     },
 

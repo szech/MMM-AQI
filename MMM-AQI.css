@@ -59,43 +59,35 @@ th.aqi,
 
 
 /*  aqi colours  */
-.city.good,
-.aqi.good,
-.iaqi.good {
+.good {
   color: #009966;
 }
 
-.city.moderate,
-.aqi.moderate,
-.iaqi.moderate {
+.moderate {
   color: #ffde33;
 }
 
-.city.unhealthy-sensitive,
-.aqi.unhealthy-sensitive,
-.iaqi.unhealthy-sensitive {
+.unhealthy-sensitive {
   color: #ff9933;
 }
 
-.city.unhealthy,
-.aqi.unhealthy,
-.iaqi.unhealthy {
+.unhealthy {
   color: #cc0033;
 }
 
-.city.unhealthy,
-.aqi.very-unhealthy,
-.iaqi.very-unhealthy,
+.very-unhealthy,
 .purple {
   color: #660099;
 }
 
-.city.hazardous,
-.aqi.hazardous,
-.iaqi.hazardous {
+.hazardous {
   color: #7e0023;
 }
 
+/*  humidity > 90%  */
+.underwater {
+  color: #0822b5;
+}
 
 /*  temperature colours  */
 /*  based on the met office colours: https://www.metoffice.gov.uk/blog/2023/no-need-to-see-red-over-met-office-colour-scale */

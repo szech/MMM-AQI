@@ -6,7 +6,7 @@
 
 const Log = require("logger");
 const NodeHelper = require("node_helper");
-const MAX_ATTEMPTS = 5; // Initial attempt + 2 retries
+const MAX_ATTEMPTS = 8;
 const INITIAL_DELAY_MS = 3000; 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 

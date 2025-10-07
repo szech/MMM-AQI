@@ -13,6 +13,10 @@ td.key {
     max-width: 7.5em;
 }
 
+th.aqi.value {
+    padding-left: 0.7em;
+}
+
 td.value,
 .iaqi.key {
     padding-left: 1em;
@@ -20,13 +24,13 @@ td.value,
 
 
 th.city,
-th.aqi,
+th.aqi.title,
 .iaqi.key,
 .atm.key {
   text-align: right;
 }
 
-th.aqi,
+th.aqi.value,
 .atm.value,
 .iaqi.value {
   text-align: left;

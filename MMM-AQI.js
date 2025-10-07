@@ -170,7 +170,7 @@ Module.register("MMM-AQI", {
                       valueCell.innerHTML = value + this.displayUnits.get(atmKey)
                    
                       // set classes
-                      valueCell.className = `small atm value `
+                      valueCell.className = `small atm value \x20` // add an extra space
                       valueCell.className += atmKey == "t" ? this.getTemperatureClass(value) : ""
                       valueCell.className += atmKey == "uvi" ? this.getUVIClass(value) : ""
                       valueCell.className += atmKey == "h" ? this.getHumidityClass(value) : ""

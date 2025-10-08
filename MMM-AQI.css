@@ -90,7 +90,7 @@ th.aqi.value,
 
 /*  humidity > 90%  */
 .underwater {
-  color: #0822b5;
+  color: #0455d7;
 }
 
 /*  temperature colours  */
@@ -129,5 +129,5 @@ th.aqi.value,
 }
 
 .darkred {
-  color: #34060f;
+  color: #6c0318;
 }

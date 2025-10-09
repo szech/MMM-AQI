@@ -6,8 +6,8 @@
 
 const Log = require("logger");
 const NodeHelper = require("node_helper");
-const MAX_ATTEMPTS = 8;
-const INITIAL_DELAY_MS = 3000; 
+const MAX_ATTEMPTS = 28; // brute force a response
+const INITIAL_DELAY_MS = 300; 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 

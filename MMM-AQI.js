@@ -207,8 +207,30 @@ Module.register("MMM-AQI", {
                   dataTable.appendChild(dataRow)
               }
           }
+
+        // add timestamp row
+        const timestampRow = document.createElement("tr")
+        dataTable.appendChild(timestampRow)
+
+        const timeAcquiredCell = document.createElement("td")
+        timeAcquiredCell.innerHTML =  "Data acquired:"
+        timeAcquiredCell.colSpan = 1
+        timeAcquiredCell.className = "xsmall dimmed align-right"
+        timestampRow.appendChild(timeAcquiredCell)
+
+        const timeCell = document.createElement("td")
+        timeCell.innerHTML =  this.result.timestamp
+        timeCell.colSpan = 1
+        timeCell.className = "timecell xsmall dimmed align-left"
+        timestampRow.appendChild(timeCell)
+
+        // Placeholders to maintain 4-column structure 
+        timestampRow.appendChild(document.createElement("td"))
+        timestampRow.appendChild(document.createElement("td"))
+
       }
-    } else { // no data
+
+    } else { // no data supplied
         const row1 = document.createElement("tr")
         dataTable.appendChild(row1)
 
@@ -238,7 +260,8 @@ Module.register("MMM-AQI", {
 
   processAQI (result) {
     this.result = {}
-    this.result.timestamp = moment().format("LLL")
+    moment.locale('en-gb') 
+    this.result.timestamp = moment().format("LT")
     if (typeof result !== "undefined" && result != null) {
       if (this.config.debug) {
         Log.info(result)

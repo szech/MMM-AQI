@@ -18,7 +18,8 @@ th.aqi.value {
 }
 
 td.value,
-.iaqi.key {
+.iaqi.key,
+.timecell {
     padding-left: 1em;
 }
 

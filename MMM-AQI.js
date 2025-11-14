@@ -60,27 +60,37 @@ Module.register("MMM-AQI", {
     ])
 
     
-      if (this.config.debug) {
+    if (this.config.debug) {
       Log.info(this.url)
     }
+
     this.updateAQI(this)
+
   },
+
+
   // updateAQI
   updateAQI (self) {
-    self.sendSocketNotification("GET_AQI", {url: self.url})
+    this.fetchAQIDirectly(this.url)
   },
+
 
   getStyles () {
     return ["MMM-AQI.css", "weather-icons.css"]
   },
+
+
   // Define required scripts.
   getScripts () {
     return ["moment.js"]
   },
+
+
   // Define header for module.
   getHeader () {
     return this.data.header
   },
+
 
   // Override dom generator.
   getDom () {
@@ -444,6 +454,12 @@ Module.register("MMM-AQI", {
   * dawn/dusk times.
   * * NOTE: Real-world applications should use an external API (like a weather service) 
   * to determine accurate dawn/dusk times dynamically.
+  * 
+  * TODO: Integrate with https://github.com/Hypnos3/suncalc3
+  * - given location and time,
+  * - when sun position is > 40 degrees, set timeslot = 2
+  * - else use existing logic
+  * - what happens in the nordics when the sun is always up?
   */
   determineCardiffTimeSlot() {
     // Placeholder times for October in Cardiff (using 24-hour format)
@@ -499,6 +515,7 @@ Module.register("MMM-AQI", {
     }
     return params
   },
+
   /* scheduleUpdate()
    * Schedule next update.
    * argument delay number - Milliseconds before next update. If empty, this.config.updateInterval is used.
@@ -515,6 +532,7 @@ Module.register("MMM-AQI", {
       self.updateAQI(self)
     }, nextLoad)
   },
+
   // Process data returned
   socketNotificationReceived (notification, payload) {
     if (notification === "AQI_DATA" && payload.url === this.url) {
@@ -522,4 +540,26 @@ Module.register("MMM-AQI", {
       this.scheduleUpdate(this.config.updateInterval)
     }
   },
+
+
+  // fetch directly from the browser
+  fetchAQIDirectly () {
+      // Log.info(`${this.name}: fetchAQIDirectly => ${this.url}`)
+
+      try {
+        fetch(this.url)
+          .then(result => result.json())
+          .then(result => {
+        this.processAQI(result)
+        this.scheduleUpdate(this.config.updateInterval)
+
+        // Log.info(`${this.name}: result =>` +  JSON.stringify(result))
+
+
+        })
+      } catch (error) {
+            console.warn(`💥 [MMM-AQI] fetchAQIDirectly failed:`, error.message);
+      }
+  },
+
 })

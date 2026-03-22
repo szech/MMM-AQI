@@ -173,6 +173,8 @@ Module.register("MMM-AQI", {
                       value = ""
                       if(atmKey == "uvi") {
                         value = this.getUVIValue(uvi)
+                      } else if(atmKey == "w") {
+                        value = iaqi[atmKey].v
                       } else {
                         value = Math.round(iaqi[atmKey].v)
                       }

@@ -205,7 +205,7 @@ Module.register("MMM-AQI", {
 
                       // Value
                       const valueCell = document.createElement("td")
-                      valueCell.className = `small iaqi value ${aqiClass} ${polKey}`
+                      valueCell.className = `small iaqi value ` + this.getAQIClass(iaqi[polKey].v) + ` ${polKey}`
                       valueCell.innerHTML = Math.round(iaqi[polKey].v)
                       dataRow.appendChild(valueCell)
                   } else {

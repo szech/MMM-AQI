@@ -236,9 +236,39 @@ Module.register("MMM-AQI", {
         timeCell.className = "timecell xsmall dimmed align-left"
         timestampRow.appendChild(timeCell)
 
-        // Placeholders to maintain 4-column structure 
-        timestampRow.appendChild(document.createElement("td"))
-        timestampRow.appendChild(document.createElement("td"))
+
+        // determine how stale the data is
+        const dataTimestamp = this.result.data.time.iso
+        const dataTime = moment(dataTimestamp);
+        const now = moment()
+
+        const hoursDiff = now.diff(dataTime, 'hours', true);
+
+        // 3. Determine the status
+        let dataStatus = "";
+
+        if (hoursDiff > 6) {
+          dataStatus = "outdated";
+        } else if (hoursDiff >= 2) {
+          dataStatus = "stale";
+        } else {
+          dataStatus = "live";
+          // Placeholders to maintain 4-column structure 
+          timestampRow.appendChild(document.createElement("td"))
+          timestampRow.appendChild(document.createElement("td"))
+        }
+
+
+        if(dataStatus != "live") {
+          const statusCell = document.createElement("td")
+          statusCell.innerHTML =  "Data is " + dataStatus
+          statusCell.colSpan = 2
+          statusCell.className = "timecell xsmall dimmed align-center " + dataStatus
+          timestampRow.appendChild(statusCell)
+
+        }
+
+
 
       }
 
@@ -371,7 +401,7 @@ Module.register("MMM-AQI", {
             return  "unhealthy-sensitive"
           case w >= 17 && w < 24:
             return  "unhealthy bright"
-          case w >= 25:
+          case w >= 24:
             return  "hazardous bright"
         }
       },
@@ -382,7 +412,7 @@ Module.register("MMM-AQI", {
     getHumidityClass(h) {
       switch (true) {
         case h <= 30:
-          return  "unhealthy-sensitive"
+          return  "unhealthy-sensitive bright"
         case h >= 31 && h < 41:
           return  "moderate"  
         case h >= 41 && h < 66:
@@ -392,7 +422,7 @@ Module.register("MMM-AQI", {
         case h >= 80 && h < 91:
           return  "unhealthy-sensitive"
         case h >= 91:
-          return  "underwater"
+          return  "underwater bright"
       }
     },
 
@@ -402,7 +432,7 @@ Module.register("MMM-AQI", {
     getPressureClass(p) {
       switch (true) {
         case p < 980:
-          return  "darkblue"
+          return  "darkblue bright"
         case p >= 980 && p < 1000:
           return  "blue"  
         case p >= 1000 && p < 1020:
@@ -503,8 +533,8 @@ Module.register("MMM-AQI", {
             break;
     }
 
-    console.log(`Current Hour in Cardiff: ${currentHour}:00`);
-    console.log(`Determined Time Slot: ${timeSlot}`);
+    // console.debug(`Current Hour in Cardiff: ${currentHour}:00`);
+    // console.debug(`Determined Time Slot: ${timeSlot}`);
     return timeSlot;
 },
 

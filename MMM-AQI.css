@@ -1,6 +1,10 @@
 
 /***    MMM-AQI  */
 
+.align-center {
+  text-align: center;
+}
+
 th {
     font-size: var(--font-size-medium);
 }
@@ -131,4 +135,13 @@ th.aqi.value,
 
 .darkred {
   color: #6c0318;
+}
+
+/* data status colours */
+.stale {
+  color: #f6db8d;
+}
+
+.outdated {
+  color: #cd4e3b;
 }

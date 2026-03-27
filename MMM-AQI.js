@@ -23,7 +23,9 @@ Module.register("MMM-AQI", {
     this.scheduleUpdate(this.config.initialLoadDelay)
     this.updateTimer = null
     this.apiBase = `https://api.waqi.info/feed/${this.config.city}/`
+    this.apiBase2 = `https://api.waqi.info/feed/${this.config.backupCity}/`
     this.url = encodeURI(this.apiBase + this.getParams())
+    this.url2 = encodeURI(this.apiBase2 + this.getParams()) // use this if the data is outdated (more than 6 hours old)
     
     // Helper lists for organizing the data into columns
     this.ATMOSPHERIC_KEYS = ["t", "h", "p", "w", "uvi"]
@@ -567,7 +569,7 @@ Module.register("MMM-AQI", {
 
   // Process data returned
   socketNotificationReceived (notification, payload) {
-    if (notification === "AQI_DATA" && payload.url === this.url) {
+    if (notification === "AQI_DATA" && (payload.url === this.url || payload.url === this.url2)) {
       this.processAQI(payload.data)
       this.scheduleUpdate(this.config.updateInterval)
     }
@@ -576,22 +578,54 @@ Module.register("MMM-AQI", {
 
   // fetch directly from the browser
   fetchAQIDirectly () {
-      // Log.info(`${this.name}: fetchAQIDirectly => ${this.url}`)
+      Log.info(`${this.name}: fetchAQIDirectly => ${this.url}`)
 
-      try {
         fetch(this.url)
-          .then(result => result.json())
-          .then(result => {
-        this.processAQI(result)
-        this.scheduleUpdate(this.config.updateInterval)
+          .then(response => response.json())
+          .then(response => {
 
+              
+
+              // is the response stale? (more than 3 hours old)
+              if(this.isDataStale(response.data.time.iso)) {
+
+                Log.info(`AQI data is stale, calling the backup location:  ${this.url2}`)
+                
+                  return fetch(this.url2)
+                  .then(response2 => response2.json())
+                  .then(response2 => {
+
+                    this.result = response2
+
+                  })
+              } else  {
+                  this.result = response
+              }
+                
         // Log.info(`${this.name}: result =>` +  JSON.stringify(result))
 
 
-        })
-      } catch (error) {
-            console.warn(`💥 [MMM-AQI] fetchAQIDirectly failed:`, error.message);
-      }
+        }) .then(() => {
+
+            this.processAQI(this.result)
+            this.scheduleUpdate(this.config.updateInterval)
+
+      }) .catch (error => {
+            console.warn(`💥 [MMM-AQI] fetchAQIDirectly call failed:`, error.message);
+
+      })
+  },
+
+
+  // return TRUE if the data is more than 3 hours old
+  isDataStale(dataTimestamp) {
+      const dataTime = moment(dataTimestamp);
+      const now = moment()
+
+      const hoursDiff = now.diff(dataTime, 'hours', true);
+
+      return hoursDiff >= 3 ? true : false;
+
   },
 
 })
